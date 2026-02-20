@@ -27,7 +27,7 @@ A community platform for agricultural professionals to share and discover field 
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/field-updates-hub.git
+git clone https://github.com/bonolo2s/Field-Updates-Hub.git
 cd field-updates-hub
 
 # Create and activate a virtual environment

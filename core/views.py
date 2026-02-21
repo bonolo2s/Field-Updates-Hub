@@ -3,8 +3,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import RegisterForm
+from .forms import FieldUpdateForm, RegisterForm, FieldUpdate    
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from .models import FieldUpdate
+
 
 def register_view(request):
     if request.method == 'POST':
@@ -48,3 +51,56 @@ def logout_view(request):
         messages.success(request, "You've been logged out.")
         return redirect('login')
     return redirect('feed')
+
+@login_required
+def create_update(request):
+    if request.method == 'POST':
+        form = FieldUpdateForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False) 
+            post.author = request.user      
+            post.save()                    
+            messages.success(request, "Field update posted!")
+            return redirect('feed')
+    else:
+        form = FieldUpdateForm()
+    return render(request, 'core/create_update.html', {'form': form})
+
+@login_required
+def edit_update(request, pk):
+    post = FieldUpdate.objects.get(pk=pk)
+    if not post.can_edit(request.user): 
+        messages.error(request, "You can't edit this post.")
+        return redirect('feed')
+    if request.method == 'POST':
+        form = FieldUpdateForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Updated!")
+            return redirect('feed')
+    else:
+        form = FieldUpdateForm(instance=post)
+    return render(request, 'core/edit_update.html', {'form': form})
+
+@login_required
+def delete_update(request, pk):
+    post = FieldUpdate.objects.get(pk=pk)
+    if not post.can_edit(request.user):
+        messages.error(request, "You can't delete this post.")
+        return redirect('feed')
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, "Deleted!")
+        return redirect('feed')
+    return render(request, 'core/delete_update.html', {'post': post})
+
+def landing(request):
+    if request.user.is_authenticated:
+        return redirect('feed')
+    posts = FieldUpdate.objects.all().order_by('-created_at')[:3] 
+    return render(request, 'landing.html', {'posts': posts})
+
+@login_required
+def feed(request):
+    posts = FieldUpdate.objects.all().order_by('-created_at')
+    return render(request, 'core/feed.html', {'posts': posts})

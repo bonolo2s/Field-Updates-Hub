@@ -10,4 +10,6 @@ urlpatterns = [
     path('delete/<int:pk>/', views.delete_update, name='delete_update'),
     path('', views.landing, name='landing'),
     path('feed/', views.feed, name='feed'),
+    path('community/', views.community, name='community'),
+    path('profile/<int:pk>/', views.profile, name='profile'),
 ]

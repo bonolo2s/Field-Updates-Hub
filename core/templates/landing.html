@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>Field Updates Hub</title></head>
+<body>
+
+  <h1>Field Updates Hub</h1>
+  <p>A community platform for agricultural professionals.</p>
+
+  <a href="{% url 'register' %}">Get Started</a>
+  <a href="{% url 'login' %}">Login</a>
+
+  <h2>Latest Updates</h2>
+  {% for post in posts %}
+    <div>
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.message }}</p>
+      <small>{{ post.author.get_full_name }} — {{ post.created_at }}</small>
+    </div>
+  {% endfor %}
+
+</body>
+</html>

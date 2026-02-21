@@ -1,3 +1,5 @@
+#from django.contrib.auth import models
+from django.db import models
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -49,7 +51,7 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         messages.success(request, "You've been logged out.")
-        return redirect('login')
+        return redirect('/')
     return redirect('feed')
 
 @login_required
@@ -104,3 +106,16 @@ def landing(request):
 def feed(request):
     posts = FieldUpdate.objects.all().order_by('-created_at')
     return render(request, 'core/feed.html', {'posts': posts})
+
+from django.contrib.auth.models import User
+
+@login_required
+def community(request):
+    users = User.objects.all().annotate(post_count=models.Count('field_updates'))
+    return render(request, 'core/community.html', {'users': users})
+
+@login_required
+def profile(request, pk):
+    user = User.objects.get(pk=pk)
+    posts = FieldUpdate.objects.filter(author=user).order_by('-created_at')
+    return render(request, 'core/profile.html', {'profile_user': user, 'posts': posts})

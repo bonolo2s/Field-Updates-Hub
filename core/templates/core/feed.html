@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Community{% endblock %}
+
+{% block content %}
+
+  <h1>Feed</h1>
+  <a href="{% url 'create_update' %}">+ New Update</a>
+  <form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+  </form>
+
+  {% for post in posts %}
+    <div>
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.message }}</p>
+      <small>{{ post.category }} — {{ post.author.get_full_name }} — {{ post.created_at }}</small>
+      {% if post.author == request.user %}
+        <a href="{% url 'edit_update' post.pk %}">Edit</a>
+        <a href="{% url 'delete_update' post.pk %}">Delete</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+{% endblock %}

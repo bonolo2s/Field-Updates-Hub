@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Field Updates Hub{% endblock %}</title>
+</head>
+<body>
+
+  <nav>
+    <a href="{% url 'feed' %}">Field Updates Hub</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'community' %}">Community</a>
+      <a href="{% url 'profile' user.pk %}">{{ user.get_full_name }}</a>
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Register</a>
+    {% endif %}
+  </nav>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  {% block content %}{% endblock %}
+
+</body>
+</html>

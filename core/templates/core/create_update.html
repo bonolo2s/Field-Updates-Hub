@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Community{% endblock %}
+
+{% block content %}
+
+  <h1>New Field Update</h1>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Post</button>
+  </form>
+
+  <a href="{% url 'feed' %}">Cancel</a>
+
+{% endblock %}

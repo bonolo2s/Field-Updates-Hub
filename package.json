@@ -1,0 +1,26 @@
+{
+  "name": "fieldupdateshub",
+  "version": "1.0.0",
+  "description": "A community platform for agricultural professionals to share and discover field intelligence — pest alerts, weather observations, crop conditions, fertilizer recommendations, and farming insights.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bonolo2s/Field-Updates-Hub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bonolo2s/Field-Updates-Hub/issues"
+  },
+  "homepage": "https://github.com/bonolo2s/Field-Updates-Hub#readme",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.0",
+    "tailwindcss": "^4.2.0",
+    "vite": "^7.3.1"
+  }
+}

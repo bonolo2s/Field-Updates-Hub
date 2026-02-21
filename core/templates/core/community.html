@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Community{% endblock %}
+
+{% block content %}
+
+  <h1>Community Members</h1>
+  <p>Connect with agricultural experts and local farmers.</p>
+
+  <div>
+    {% for user in users %}
+      <div>
+        <!-- Avatar with initials -->
+        <div>{{ user.first_name|first }}{{ user.last_name|first }}</div>
+        <h3>{{ user.get_full_name }}</h3>
+        <p>{{ user.email }}</p>
+        <p>{{ user.post_count }} POSTS</p>
+        <a href="{% url 'profile' user.pk %}">View Profile</a>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

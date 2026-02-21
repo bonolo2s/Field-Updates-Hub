@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Community{% endblock %}
+
+{% block content %}
+
+  <h1>Delete "{{ post.title }}"?</h1>
+  <p>This cannot be undone.</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit">Yes, Delete</button>
+  </form>
+
+  <a href="{% url 'feed' %}">Cancel</a>
+
+{% endblock %}

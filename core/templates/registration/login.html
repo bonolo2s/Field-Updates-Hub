@@ -1,24 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head><title>Login</title></head>
-<body>
+{% extends 'base_auth.html' %}
 
-  <h1>Login</h1>
+{% block title %}Login{% endblock %}
 
-  {% if messages %}
-    {% for message in messages %}
-      <p>{{ message }}</p>
-    {% endfor %}
-  {% endif %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200 w-full max-w-md">
 
-  <form method="POST">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Username" required/>
-    <input type="password" name="password" placeholder="Password" required/>
-    <button type="submit">Login</button>
-  </form>
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Login</h1>
 
-  <a href="{% url 'register' %}">Don't have an account? Register</a>
+    {% if messages %}
+      {% for message in messages %}
+        <p class="mb-4 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">{{ message }}</p>
+      {% endfor %}
+    {% endif %}
 
-</body>
-</html>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username" required
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+      <input type="password" name="password" placeholder="Password" required
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+      <button type="submit"
+        class="w-full bg-green-700 hover:bg-green-600 text-white font-semibold py-2 rounded-lg text-sm transition">
+        Login
+      </button>
+    </form>
+
+    <a href="{% url 'register' %}" class="block text-center mt-4 text-sm text-green-700 hover:underline">
+      Don't have an account? Register
+    </a>
+
+  </div>
+</div>
+{% endblock %}

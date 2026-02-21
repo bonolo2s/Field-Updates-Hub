@@ -1,26 +1,49 @@
 {% extends 'base.html' %}
 
-{% block title %}Community{% endblock %}
+{% block title %}Feed{% endblock %}
 
 {% block content %}
 
-  <h1>Feed</h1>
-  <a href="{% url 'create_update' %}">+ New Update</a>
-  <form method="POST" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-  </form>
+{% for post in posts %}
+  <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm mb-4">
+    
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+          {{ post.author.first_name|first|upper }}{{ post.author.last_name|first|upper }}
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-gray-800">{{ post.author.get_full_name }}</p>
+          <p class="text-xs text-gray-400">{{ post.created_at|timesince }} ago</p>
+        </div>
+      </div>
 
-  {% for post in posts %}
-    <div>
-      <h3>{{ post.title }}</h3>
-      <p>{{ post.message }}</p>
-      <small>{{ post.category }} — {{ post.author.get_full_name }} — {{ post.created_at }}</small>
-      {% if post.author == request.user %}
-        <a href="{% url 'edit_update' post.pk %}">Edit</a>
-        <a href="{% url 'delete_update' post.pk %}">Delete</a>
+      <!-- Category badge with colors -->
+      {% if post.category == 'pest_alert' %}
+        <span class="text-xs px-2 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">Pest Alert</span>
+      {% elif post.category == 'weather' %}
+        <span class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-200">Weather Observation</span>
+      {% elif post.category == 'crop_condition' %}
+        <span class="text-xs px-2 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">Crop Condition</span>
+      {% elif post.category == 'fertilizer' %}
+        <span class="text-xs px-2 py-1 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">Fertilizer Tip</span>
+      {% else %}
+        <span class="text-xs px-2 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-200">General Insight</span>
       {% endif %}
+
     </div>
-  {% endfor %}
+
+    <h3 class="font-bold text-gray-800 mb-2">{{ post.title }}</h3>
+    <p class="text-sm text-gray-500 mb-4">{{ post.message }}</p>
+
+    {% if post.author == request.user %}
+      <div class="flex gap-3 border-t border-gray-100 pt-3">
+        <a href="{% url 'edit_update' post.pk %}" class="text-xs text-green-700 hover:underline">Edit</a>
+        <a href="{% url 'delete_update' post.pk %}" class="text-xs text-red-500 hover:underline">Delete</a>
+      </div>
+    {% endif %}
+
+  </div>
+{% endfor %}
 
 {% endblock %}

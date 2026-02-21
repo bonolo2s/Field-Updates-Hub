@@ -4,7 +4,9 @@
   "description": "A community platform for agricultural professionals to share and discover field intelligence — pest alerts, weather observations, crop conditions, fertilizer recommendations, and farming insights.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
   },
   "repository": {
     "type": "git",

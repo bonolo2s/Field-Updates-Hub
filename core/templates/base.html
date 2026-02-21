@@ -1,32 +1,109 @@
+{% load django_vite %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{% block title %}Field Updates Hub{% endblock %}</title>
+  {% vite_asset 'src/main.css' %}
 </head>
-<body>
+<body class="bg-gray-50">
 
-  <nav>
-    <a href="{% url 'feed' %}">Field Updates Hub</a>
-    {% if user.is_authenticated %}
-      <a href="{% url 'community' %}">Community</a>
-      <a href="{% url 'profile' user.pk %}">{{ user.get_full_name }}</a>
-      <form method="POST" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-      </form>
-    {% else %}
-      <a href="{% url 'login' %}">Login</a>
-      <a href="{% url 'register' %}">Register</a>
-    {% endif %}
-  </nav>
+{% if user.is_authenticated %}
 
-  {% if messages %}
-    {% for message in messages %}
-      <p>{{ message }}</p>
-    {% endfor %}
-  {% endif %}
+  <div class="flex h-screen overflow-hidden">
 
-  {% block content %}{% endblock %}
+    <!-- SIDEBAR -->
+    <aside class="w-56 px-8 bg-red-500 border-r border-gray-200 text-gray-700 flex flex-col fixed h-full">
+
+      <!-- Logo -->
+      <div class="px-4 py-5 border-b border-gray-200">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">🌿</div>
+          <div>
+            <p class="font-bold text-gray-800 text-sm">Field Hub</p>
+            <p class="text-xs text-gray-400">Updates & Insights</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="px-3 py-4">
+        <p class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-3">Menu</p>
+        <a href="{% url 'feed' %}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 mb-1 {% if request.resolver_match.url_name == 'feed' %}bg-gray-100 font-semibold{% endif %}">
+          📋 Feed
+        </a>
+        <a href="{% url 'community' %}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 mb-1 {% if request.resolver_match.url_name == 'community' %}bg-gray-100 font-semibold{% endif %}">
+          👥 Community
+        </a>
+      </nav>
+
+      <!-- Weather Widget -->
+      <div class="mx-3 mb-4 p-1 bg-gray-50 border border-gray-200 rounded-xl">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-xs text-gray-500">🌤️ Local Weather</span>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">24°C</p>
+        <p class="text-xs text-gray-400">Partly Cloudy</p>
+        <span class="inline-block mt-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Safe to spray</span>
+      </div>
+
+      <!-- New Post -->
+      <div class="px-3 pb-4">
+        <a href="{% url 'create_update' %}" class="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg text-sm transition">
+          ＋ New Post
+        </a>
+      </div>
+
+
+      <div class="px-4 py-5 flex items-center gap-3">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+          {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-800 truncate">{{ user.username }}</p>
+          <p class="text-xs text-gray-400 truncate">{{ user.email }}</p>
+        </div>
+        <form method="POST" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="text-s text-gray-400 hover:text-red-500 transition">↩</button>
+        </form>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="ml-56 flex-1 flex flex-col min-h-screen">
+
+      <header class="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+        <input type="text" placeholder="Search updates, topics, farmers..."
+          class="w-80 px-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"/>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-500">☀️ Sunny</span>
+          <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xs">
+            {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+          </div>
+        </div>
+      </header>
+
+      {% if messages %}
+        <div class="px-6 pt-4">
+          {% for message in messages %}
+            <div class="mb-2 px-4 py-3 rounded-lg bg-green-50 border border-green-200 text-green-800 text-sm">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <main class="flex-1 p-6">
+        {% block content %}{% endblock %}
+      </main>
+
+    </div>
+
+  </div>
+
+{% endif %}
 
 </body>
 </html>

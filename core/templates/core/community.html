@@ -4,20 +4,27 @@
 
 {% block content %}
 
-  <h1>Community Members</h1>
-  <p>Connect with agricultural experts and local farmers.</p>
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Community Members</h1>
+  <p class="text-sm text-gray-500 mt-1">Connect with agricultural experts and local farmers.</p>
+</div>
 
-  <div>
-    {% for user in users %}
-      <div>
-        <!-- Avatar with initials -->
-        <div>{{ user.first_name|first }}{{ user.last_name|first }}</div>
-        <h3>{{ user.get_full_name }}</h3>
-        <p>{{ user.email }}</p>
-        <p>{{ user.post_count }} POSTS</p>
-        <a href="{% url 'profile' user.pk %}">View Profile</a>
-      </div>
-    {% endfor %}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {% for user in users %}
+  <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col items-center text-center">
+    <div class="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg mb-3">
+      {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+    </div>
+    <h3 class="font-semibold text-gray-800 text-sm">{{ user.get_full_name }}</h3>
+    <p class="text-xs text-gray-400 mb-1">{{ user.email }}</p>
+    <span class="text-xs text-green-700 bg-green-50 border border-green-200 px-2 py-1 rounded-full mb-4">
+      {{ user.post_count }} Posts
+    </span>
+    <a href="{% url 'profile' user.pk %}" class="w-full text-center text-sm bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg transition">
+      View Profile
+    </a>
   </div>
+  {% endfor %}
+</div>
 
 {% endblock %}

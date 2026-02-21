@@ -1,17 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %}Community{% endblock %}
+{% block title %}Delete Post{% endblock %}
 
 {% block content %}
 
-  <h1>Delete "{{ post.title }}"?</h1>
-  <p>This cannot be undone.</p>
+<div class="max-w-md mx-auto">
+  <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm text-center">
 
-  <form method="POST">
-    {% csrf_token %}
-    <button type="submit">Yes, Delete</button>
-  </form>
+    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+      <span class="text-red-500 text-xl">🗑️</span>
+    </div>
 
-  <a href="{% url 'feed' %}">Cancel</a>
+    <h1 class="text-xl font-bold text-gray-800 mb-2">Delete Post?</h1>
+    <p class="text-sm text-gray-500 mb-1">"{{ post.title }}"</p>
+    <p class="text-xs text-gray-400 mb-6">This cannot be undone.</p>
+
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit"
+        class="w-full bg-red-500 hover:bg-red-400 text-white font-semibold py-2 rounded-lg text-sm transition mb-3">
+        Yes, Delete
+      </button>
+    </form>
+
+    <a href="{% url 'feed' %}" class="text-sm text-gray-400 hover:text-gray-600">Cancel</a>
+
+  </div>
+</div>
 
 {% endblock %}

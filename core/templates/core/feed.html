@@ -4,46 +4,94 @@
 
 {% block content %}
 
-{% for post in posts %}
-  <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm mb-4">
+<!-- Welcome Banner -->
+<div class="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl px-6 mb-6 flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-800">Welcome back, <span class="text-green-600">{{ request.user.username }}</span></h1>
+    <p class="text-sm text-gray-500 mt-1">Here's what's happening in the field today.</p>
+  </div>
+  <div class="flex gap-6">
+    <div class="text-center">
+      <p class="text-2xl font-bold text-gray-800">{{ request.user.field_updates.count }}</p>
+      <p class="text-xs text-gray-500">Your Posts</p>
+    </div>
+    <div class="text-center">
+      <p class="text-2xl font-bold text-gray-800">{{ total_posts }}</p>
+      <p class="text-xs text-gray-500">Total Updates</p>
+    </div>
+    <div class="text-center">
+      <p class="text-2xl font-bold text-gray-800">{{ total_members }}</p>
+      <p class="text-xs text-gray-500">Members</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="flex flex-col items-center">
+  <!-- Posts -->
+  <div class="max-w-2xl">
+
+    <!-- Search + Filter -->
+    <div class="flex items-center gap-3 mb-6">
+      <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2 flex-1">
+        <span class="text-gray-400 text-sm">🔍</span>
+        <input type="text" placeholder="Search updates..." class="flex-1 text-sm focus:outline-none"/>
+      </div>
+      <select class="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-600 focus:outline-none">
+        <option>All Categories</option>
+        <option>Pest Alerts</option>
+        <option>Weather</option>
+        <option>Crop Conditions</option>
+        <option>Fertilizer</option>
+        <option>General</option>
+      </select>
+    </div>
     
-    <div class="flex items-center justify-between mb-3">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-          {{ post.author.first_name|first|upper }}{{ post.author.last_name|first|upper }}
+    {% for post in posts %}
+    <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-4">
+
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+            {{ post.author.first_name|first|upper }}{{ post.author.last_name|first|upper }}
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-800">{{ post.author.get_full_name }}</p>
+            <p class="text-xs text-gray-400">{{ post.created_at|timesince }} ago</p>
+          </div>
         </div>
-        <div>
-          <p class="text-sm font-semibold text-gray-800">{{ post.author.get_full_name }}</p>
-          <p class="text-xs text-gray-400">{{ post.created_at|timesince }} ago</p>
-        </div>
+
+        {% if post.category == 'pest_alert' %}
+          <span class="text-xs px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">Pest Alert</span>
+        {% elif post.category == 'weather' %}
+          <span class="text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-200">Weather Observation</span>
+        {% elif post.category == 'crop_condition' %}
+          <span class="text-xs px-3 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">Crop Condition</span>
+        {% elif post.category == 'fertilizer' %}
+          <span class="text-xs px-3 py-1 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">Fertilizer Tip</span>
+        {% else %}
+          <span class="text-xs px-3 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-200">General Insight</span>
+        {% endif %}
       </div>
 
-      <!-- Category badge with colors -->
-      {% if post.category == 'pest_alert' %}
-        <span class="text-xs px-2 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">Pest Alert</span>
-      {% elif post.category == 'weather' %}
-        <span class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-200">Weather Observation</span>
-      {% elif post.category == 'crop_condition' %}
-        <span class="text-xs px-2 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">Crop Condition</span>
-      {% elif post.category == 'fertilizer' %}
-        <span class="text-xs px-2 py-1 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">Fertilizer Tip</span>
-      {% else %}
-        <span class="text-xs px-2 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-200">General Insight</span>
-      {% endif %}
+      <h3 class="font-bold text-gray-800 mb-2">{{ post.title }}</h3>
+      <p class="text-sm text-gray-500 mb-4">{{ post.message }}</p>
+
+      <div class="flex items-center gap-4 border-t border-gray-100 pt-3">
+        <button class="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600">💬 Comment</button>
+        <button class="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600">↗ Share</button>
+        {% if post.author == request.user %}
+          <div class="ml-auto flex gap-3">
+            <a href="{% url 'edit_update' post.pk %}" class="text-xs text-green-700 hover:underline">Edit</a>
+            <a href="{% url 'delete_update' post.pk %}" class="text-xs text-red-500 hover:underline">Delete</a>
+          </div>
+        {% endif %}
+      </div>
 
     </div>
-
-    <h3 class="font-bold text-gray-800 mb-2">{{ post.title }}</h3>
-    <p class="text-sm text-gray-500 mb-4">{{ post.message }}</p>
-
-    {% if post.author == request.user %}
-      <div class="flex gap-3 border-t border-gray-100 pt-3">
-        <a href="{% url 'edit_update' post.pk %}" class="text-xs text-green-700 hover:underline">Edit</a>
-        <a href="{% url 'delete_update' post.pk %}" class="text-xs text-red-500 hover:underline">Delete</a>
-      </div>
-    {% endif %}
-
+    {% endfor %}
   </div>
-{% endfor %}
+</div>
+
 
 {% endblock %}

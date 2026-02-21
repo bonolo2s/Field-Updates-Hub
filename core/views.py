@@ -119,3 +119,11 @@ def profile(request, pk):
     user = User.objects.get(pk=pk)
     posts = FieldUpdate.objects.filter(author=user).order_by('-created_at')
     return render(request, 'core/profile.html', {'profile_user': user, 'posts': posts})
+
+def feed(request):
+    posts = FieldUpdate.objects.all().order_by('-created_at')
+    return render(request, 'core/feed.html', {
+        'posts': posts,
+        'total_posts': FieldUpdate.objects.count(),
+        'total_members': User.objects.count(),
+    })

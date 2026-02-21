@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{% block title %}Field Updates Hub{% endblock %}</title>
   {% vite_asset 'src/main.css' %}
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
 <body class="bg-gray-50">
 
@@ -21,7 +22,7 @@
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">🌿</div>
           <div>
-            <p class="font-bold text-gray-800 text-sm">Field Hub</p>
+            <a href="/" class="font-bold text-gray-800 text-sm">Field Hub</a>
             <p class="text-xs text-gray-400">Updates & Insights</p>
           </div>
         </div>
@@ -64,9 +65,13 @@
           <p class="text-sm font-medium text-gray-800 truncate">{{ user.username }}</p>
           <p class="text-xs text-gray-400 truncate">{{ user.email }}</p>
         </div>
+      </div>
+      <div  class="px-4 py-5 flex items-center gap-3">
         <form method="POST" action="{% url 'logout' %}">
           {% csrf_token %}
-          <button type="submit" class="text-s text-gray-400 hover:text-red-500 transition">↩</button>
+          <button type="submit" class="flex items-center justify-center gap-2 w-full border border-red-400 text-red-500 hover:bg-red-500 hover:text-white font-semibold py-2 px-4 rounded-lg text-sm transition">
+            Logout
+          </button>
         </form>
       </div>
     </aside>

@@ -12,4 +12,5 @@ urlpatterns = [
     path('feed/', views.feed, name='feed'),
     path('community/', views.community, name='community'),
     path('profile/<int:pk>/', views.profile, name='profile'),
+    path('profile-modal/<int:pk>/', views.profile_modal, name='profile_modal'),
 ]

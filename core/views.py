@@ -1,7 +1,7 @@
 #from django.contrib.auth import models
 from django.db import models
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
@@ -126,4 +126,13 @@ def feed(request):
         'posts': posts,
         'total_posts': FieldUpdate.objects.count(),
         'total_members': User.objects.count(),
+    })
+
+def profile_modal(request, pk):
+    from django.contrib.auth.models import User
+    profile_user = get_object_or_404(User, pk=pk)
+    posts = FieldUpdate.objects.filter(author=profile_user).order_by('-created_at')
+    return render(request, 'core/profile_modal.html', {
+        'profile_user': profile_user,
+        'posts': posts,
     })

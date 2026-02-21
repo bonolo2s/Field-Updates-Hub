@@ -34,7 +34,7 @@
 
     <!-- Feature icons -->
     <div class="flex gap-8 mt-10">
-      <div class="flex items-center gap-2 text-sm text-gray-600">🛡️ <span>Pest Alerts</span></div>
+      <div class="flex items-center gap-2 text-sm text-gray-600">🐛 <span>Pest Alerts</span></div>
       <div class="flex items-center gap-2 text-sm text-gray-600">🌧️ <span>Weather</span></div>
       <div class="flex items-center gap-2 text-sm text-gray-600">🌿 <span>Crop Health</span></div>
     </div>
@@ -42,8 +42,9 @@
 
   <!-- Hero image placeholder -->
   <div class="flex-1 hidden md:block">
-    <div class="w-full h-96 bg-green-100 rounded-2xl flex items-center justify-center text-green-400 text-lg">
-      🌱 Field Image
+    <div class="flex-1 hidden md:block">
+      <img src="{% load static %}{% static 'src/hero.jpg' %}" 
+        alt="Field" class="w-full h-96 object-cover rounded-2xl shadow-lg"/>
     </div>
   </div>
 </section>

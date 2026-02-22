@@ -22,12 +22,16 @@ class FieldUpdate(models.Model):
         max_length=20,
         choices=CATEGORY_CHOICES
     )
+    image = models.ImageField(
+        upload_to='post_images/',
+        blank=True,
+        null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.title} ({self.author.email})"
     
-        # ---- Business rules ----
     def clean(self):
         if not self.title.strip():
             raise ValidationError("Title cannot be empty.")
@@ -40,5 +44,4 @@ class FieldUpdate(models.Model):
             raise ValidationError("Invalid category selected.")
 
     def can_edit(self, user):
-        """Check if a given user can edit/delete this FieldUpdate"""
         return self.author == user

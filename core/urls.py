@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('register/', views.register_view, name='register'),
@@ -13,4 +15,4 @@ urlpatterns = [
     path('community/', views.community, name='community'),
     path('profile/<int:pk>/', views.profile, name='profile'),
     path('profile-modal/<int:pk>/', views.profile_modal, name='profile_modal'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

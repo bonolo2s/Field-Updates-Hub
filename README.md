@@ -20,47 +20,96 @@ A community platform for agricultural professionals to share and discover field 
 
 ### Prerequisites
 
-- Python 3.10+
-- pip
+- Python 3.10+ — runs the Django backend
+- pip — installs Python packages
+- Node.js 18+ — required for Vite to bundle Tailwind CSS
 
 ### Installation
-
 ```bash
 # Clone the repository
 git clone https://github.com/bonolo2s/Field-Updates-Hub.git
-cd field-updates-hub
+cd FieldUpdatesHub
 
 # Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+python -m venv myenv
+source myenv/bin/activate  # Windows: myenv\Scripts\activate
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
+
+# Install Node dependencies (for Tailwind + Vite)
+npm install
 
 # Apply migrations
 python manage.py migrate
 
 # Seed sample data (optional)
 python manage.py loaddata seed_data.json
-
-# Run the development server
-python manage.py runserver
 ```
+
+### Running the App
+
+You need **two terminals** running simultaneously:
+```bash
+# Terminal 1 — Django server
+python manage.py runserver
+
+# Terminal 2 — Vite (Tailwind CSS)
+npm run dev
+```
+
+> Vite compiles and serves Tailwind CSS in development mode. Without it, the app will have no styles.
 
 ### Access the App
 
 Visit `http://127.0.0.1:8000` in your browser.
 
-## Project Structure
 
 ```
-field_updates_hub/
-├── accounts/         # Auth: registration, login, profiles
-├── updates/          # Field updates CRUD
-├── templates/        # Django HTML templates
-├── static/           # Tailwind CSS and static assets
+## 📁 Project Structure
+
+```
+FieldUpdatesHub/
+├── core/                          # Main Django app
+│   ├── migrations/
+│   ├── templates/
+│   │   ├── base.html              # Authenticated layout (sidebar + navbar)
+│   │   ├── base_auth.html         # Public layout (login/register/landing)
+│   │   ├── landing.html           # Public landing page
+│   │   ├── registration/
+│   │   │   ├── login.html
+│   │   │   └── register.html
+│   │   └── core/
+│   │       ├── feed.html
+│   │       ├── community.html
+│   │       ├── profile.html
+│   │       ├── profile_modal.html
+│   │       ├── create_update.html
+│   │       ├── edit_update.html
+│   │       └── delete_update.html
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── FieldUpdates/                  # Project config
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── media/                         # User uploaded images
+├── static/
+│   └── src/
+│       └── main.css               # Tailwind entry point
+├── .gitignore
 ├── manage.py
-└── requirements.txt
+├── package.json
+├── package-lock.json
+├── vite.config.js
+├── requirements.txt
+└── README.md
 ```
 
 ## Models

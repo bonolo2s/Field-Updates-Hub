@@ -57,12 +57,11 @@ def logout_view(request):
 @login_required
 def create_update(request):
     if request.method == 'POST':
-        form = FieldUpdateForm(request.POST)
+        form = FieldUpdateForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False) 
-            post.author = request.user      
-            post.save()                    
-            messages.success(request, "Field update posted!")
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
             return redirect('feed')
     else:
         form = FieldUpdateForm()
@@ -70,19 +69,17 @@ def create_update(request):
 
 @login_required
 def edit_update(request, pk):
-    post = FieldUpdate.objects.get(pk=pk)
-    if not post.can_edit(request.user): 
-        messages.error(request, "You can't edit this post.")
+    post = get_object_or_404(FieldUpdate, pk=pk)
+    if not post.can_edit(request.user):
         return redirect('feed')
     if request.method == 'POST':
-        form = FieldUpdateForm(request.POST, instance=post)
+        form = FieldUpdateForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
-            messages.success(request, "Updated!")
             return redirect('feed')
     else:
         form = FieldUpdateForm(instance=post)
-    return render(request, 'core/edit_update.html', {'form': form})
+    return render(request, 'core/edit_update.html', {'form': form, 'post': post})
 
 @login_required
 def delete_update(request, pk):
@@ -149,7 +146,7 @@ def feed(request):
         'total_members': User.objects.count(),
         'selected_category': category,
         'search': search,
-        
+
     })
 
 def profile_modal(request, pk):

@@ -22,4 +22,4 @@ class RegisterForm(UserCreationForm):
 class FieldUpdateForm(forms.ModelForm):
     class Meta:
         model = FieldUpdate
-        fields = ['title', 'message', 'category']
+        fields = ['title', 'message', 'category', 'image']

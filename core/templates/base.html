@@ -20,7 +20,7 @@
       <!-- Logo -->
       <div class="px-4 py-5 border-b border-gray-200">
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">🌿</div>
+          <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">🌾</div>
           <div>
             <a href="/" class="font-bold text-gray-800 text-sm">Field Hub</a>
             <p class="text-xs text-gray-400">Updates & Insights</p>
@@ -78,7 +78,7 @@
 
     <!-- MAIN -->
     <div class="ml-72 bg-[#f0f2f2] flex-1 flex flex-col min-h-screen">
-
+{% comment %} 
       <header class="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-5 flex items-center justify-between">
         <input type="text" placeholder="Search updates, topics, farmers..."
           class="w-80 px-4 py-2 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"/>
@@ -87,7 +87,7 @@
             {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
           </div>
         </div>
-      </header>
+      </header> {% endcomment %}
 
       {% if messages %}
         <div class="px-6 pt-4">

@@ -9,7 +9,7 @@ from .forms import FieldUpdateForm, RegisterForm, FieldUpdate
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import FieldUpdate
-
+from django.db.models import Q
 
 def register_view(request):
     if request.method == 'POST':
@@ -32,7 +32,6 @@ def register_view(request):
         form = RegisterForm()
 
     return render(request, 'registration/register.html', {'form': form})
-
 
 def login_view(request):
     if request.method == 'POST':
@@ -122,10 +121,28 @@ def profile(request, pk):
 
 def feed(request):
     posts = FieldUpdate.objects.all().order_by('-created_at')
+    
+    category = request.GET.get('category', '')
+    search = request.GET.get('search', '')
+    
+    
+    if category:
+        posts = posts.filter(category=category)
+
+    if search:
+        posts = posts.filter(
+            Q(title__icontains=search) |
+            Q(message__icontains=search) |
+            Q(author__first_name__icontains=search) |
+            Q(author__last_name__icontains=search)
+        )
+    
+    
     return render(request, 'core/feed.html', {
         'posts': posts,
         'total_posts': FieldUpdate.objects.count(),
         'total_members': User.objects.count(),
+        'selected_category': category,
     })
 
 def profile_modal(request, pk):
@@ -136,3 +153,4 @@ def profile_modal(request, pk):
         'profile_user': profile_user,
         'posts': posts,
     })
+

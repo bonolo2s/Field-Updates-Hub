@@ -92,7 +92,7 @@ FieldUpdatesHub/
 │   ├── tests.py
 │   ├── urls.py
 │   └── views.py
-├── FieldUpdates/                  # Project config
+├── FieldUpdates/                  # Project configuration
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py

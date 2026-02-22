@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import FieldUpdate
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 def register_view(request):
     if request.method == 'POST':
@@ -137,12 +138,18 @@ def feed(request):
             Q(author__last_name__icontains=search)
         )
     
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
     
     return render(request, 'core/feed.html', {
-        'posts': posts,
+        'posts': page_obj,
+        'page_obj': page_obj,
         'total_posts': FieldUpdate.objects.count(),
         'total_members': User.objects.count(),
         'selected_category': category,
+        'search': search,
+        
     })
 
 def profile_modal(request, pk):

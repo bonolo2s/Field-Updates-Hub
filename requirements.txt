@@ -1,3 +1,6 @@
-Django>=6.0.2
-Pillow>=10.0.0
-django-vite>=3.0.0
+asgiref==3.11.1
+Django==6.0.2
+django-vite==3.1.0
+pillow==12.1.1
+sqlparse==0.5.5
+tzdata==2025.3

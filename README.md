@@ -64,10 +64,7 @@ npm run dev
 
 Visit `http://127.0.0.1:8000` in your browser.
 
-
-```
 ## 📁 Project Structure
-
 ```
 FieldUpdatesHub/
 ├── core/                          # Main Django app
@@ -95,7 +92,7 @@ FieldUpdatesHub/
 │   ├── tests.py
 │   ├── urls.py
 │   └── views.py
-├── FieldUpdates/                  # Project config
+├── FieldUpdates/                  # Project configuration
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
@@ -111,7 +108,6 @@ FieldUpdatesHub/
 ├── requirements.txt
 └── README.md
 ```
-
 ## Models
 
 **User** — Django's built-in User model (name, email)

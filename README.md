@@ -64,11 +64,8 @@ npm run dev
 
 Visit `http://127.0.0.1:8000` in your browser.
 
-
-```
 ## 📁 Project Structure
 
-```
 FieldUpdatesHub/
 ├── core/                          # Main Django app
 │   ├── migrations/
@@ -110,7 +107,6 @@ FieldUpdatesHub/
 ├── vite.config.js
 ├── requirements.txt
 └── README.md
-```
 
 ## Models
 

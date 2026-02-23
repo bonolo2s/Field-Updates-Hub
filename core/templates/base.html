@@ -40,14 +40,44 @@
       </nav>
 
       <!-- Weather Widget -->
-      <div class="mx-3 mb-4 p-1 bg-gray-50 border border-gray-200 rounded-xl">
+      <div class="mx-3 mb-4 p-3 bg-gray-50 border border-gray-200 rounded-xl">
         <div class="flex items-center gap-2 mb-1">
           <span class="text-xs text-gray-500">🌤️ Local Weather</span>
         </div>
-        <p class="text-2xl font-bold text-gray-800">24°C</p>
-        <p class="text-xs text-gray-400">Partly Cloudy</p>
-        <span class="inline-block mt-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Safe to spray</span>
+        <p class="text-2xl font-bold text-gray-800" id="weather-temp">--°C</p>
+        <p class="text-xs text-gray-400" id="weather-desc">Detecting location...</p>
+        <span class="inline-block mt-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full" id="weather-spray">--</span>
       </div>
+
+      <script>
+        const weatherCodes = {
+          0: 'Clear Sky', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
+          45: 'Foggy', 48: 'Icy Fog', 51: 'Light Drizzle', 53: 'Drizzle',
+          61: 'Light Rain', 63: 'Rain', 65: 'Heavy Rain', 71: 'Light Snow',
+          80: 'Showers', 95: 'Thunderstorm'
+        };
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(async (pos) => {
+            const { latitude, longitude } = pos.coords;
+            const res = await fetch(
+              `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+            );
+            const data = await res.json();
+            const temp = Math.round(data.current_weather.temperature);
+            const code = data.current_weather.weathercode;
+            const desc = weatherCodes[code] || 'Unknown';
+            const windspeed = data.current_weather.windspeed;
+
+            document.getElementById('weather-temp').innerText = `${temp}°C`;
+            document.getElementById('weather-desc').innerText = desc;
+            document.getElementById('weather-spray').innerText = 
+              windspeed < 20 && ![61,63,65,80,95].includes(code) ? '✅ Safe to spray' : '⚠️ Not safe to spray';
+          }, () => {
+            document.getElementById('weather-desc').innerText = 'Location unavailable';
+          });
+        }
+      </script>
 
       <!-- New Post -->
       <div class="px-3 pb-4">

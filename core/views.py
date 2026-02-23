@@ -75,7 +75,11 @@ def edit_update(request, pk):
     if request.method == 'POST':
         form = FieldUpdateForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            if request.POST.get('remove_image'):
+                post.image.delete(save=False)
+                post.image = None
+            post.save()
             return redirect('feed')
     else:
         form = FieldUpdateForm(instance=post)

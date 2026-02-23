@@ -69,10 +69,16 @@
             const desc = weatherCodes[code] || 'Unknown';
             const windspeed = data.current_weather.windspeed;
 
+            const isSafe = 
+              windspeed < 20 &&                          // not too windy
+              temp < 30 &&                               // not too hot
+              ![61,63,65,80,95].includes(code) &&        // no rain/storms
+              ![45,48].includes(code);                   // no fog
+
             document.getElementById('weather-temp').innerText = `${temp}°C`;
             document.getElementById('weather-desc').innerText = desc;
             document.getElementById('weather-spray').innerText = 
-              windspeed < 20 && ![61,63,65,80,95].includes(code) ? '✅ Safe to spray' : '⚠️ Not safe to spray';
+              isSafe ? '✅ Safe to spray' : '⚠️ Not safe to spray';
           }, () => {
             document.getElementById('weather-desc').innerText = 'Location unavailable';
           });

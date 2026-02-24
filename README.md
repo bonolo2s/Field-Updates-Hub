@@ -10,11 +10,40 @@ A community platform for agricultural professionals to share and discover field 
 
 ## Features
 
+### Authentication
 - User registration and login/logout
+- Protected routes — unauthenticated users are redirected to login
+
+### Field Updates (Posts)
 - Create, edit, and delete field updates
+- Optional image upload on post creation and editing
+- Users can remove images from existing posts
+- Posts are categorized for easy browsing
+
+### Categories
+Each post belongs to one of five categories, color-coded consistently across the app:
+- 🐛 Pest Alert
+- 🌧️ Weather Observation
+- 🌿 Crop Condition
+- 🌱 Fertilizer Tip
+- 💬 General Insight
+
+### Feed
 - Public feed showing all updates in reverse chronological order
-- User profiles with post history
-- Categories: Pest Alert, Weather Observation, Crop Condition, Fertilizer Tip, General Insight
+- **Search** — searches across post title, message, and author name. Built on the backend using Django's `Q` objects to query the database directly, avoiding loading all posts into memory
+- **Filter by category** — backend filtering using Django ORM, only the relevant posts are fetched from the database
+- **Pagination** — 5 posts per page using Django's built-in `Paginator`. Translates to SQL `LIMIT/OFFSET` queries, meaning only the current page's posts are loaded from the database at a time — not all posts
+
+### Community & Profiles
+- Community page showing all registered members
+- User profiles with full post history
+- Click any user's avatar on the feed to preview their profile in a modal (powered by HTMX — no page reload)
+
+### Live Weather Widget
+- Detects the user's location via the browser
+- Fetches real-time weather from the Open-Meteo API (free, no API key required)
+- Displays temperature and current conditions
+- Advises farmers whether it is **safe to spray** based on wind speed, temperature, rainfall, and fog — key conditions that affect pesticide and fertilizer application effectiveness
 
 ## Getting Started
 
